@@ -17,7 +17,7 @@ async def main():
 
     # Запуск главного приложения.
     await root.app.start(
-        bot_token=config.main_app.bot_token,
+        bot_token=config.app_root.bot_token,
         context={
             "config": config
         },

@@ -8,15 +8,19 @@ import toml
 from src.data.storable import Storable
 
 
-@dataclass
-class MainAppConfig(Storable):
+@dataclass()
+class IOwnable(Storable):
     owner_id: int
-    bot_token: str
     admin_ids: list[int]
 
 
 @dataclass
-class AppsConfig(Storable):
+class AppConfig(IOwnable):
+    bot_token: str
+
+
+@dataclass
+class GlobalConfig(IOwnable):
     pass
 
 
@@ -48,9 +52,9 @@ class DatabaseConfig(Storable):
 
 @dataclass
 class Config(Storable):
-    apps: AppsConfig
-    main_app: MainAppConfig
+    app_root: AppConfig
     database: DatabaseConfig
+    global_data: GlobalConfig
 
 
 def parse_config(config_file: Path) -> Config:
@@ -93,4 +97,5 @@ def parse_config(config_file: Path) -> Config:
 __all__ = (
     "Config",
     "parse_config",
+    "IOwnable"
 )

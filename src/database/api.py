@@ -14,9 +14,9 @@ class User(User):
         if user:
             return user
 
-        if user_id == config.main_app.owner_id:
+        if user_id == config.global_data.owner_id:
             role = UserRole.OWNER
-        elif user_id in config.main_app.admin_ids:
+        elif user_id in config.global_data.admin_ids:
             role = UserRole.ADMIN
         else:
             role = UserRole.USER
@@ -29,7 +29,7 @@ class User(User):
 
     @classmethod
     async def create_static(cls, config: Config) -> None:
-        for admin_id in [*config.main_app.admin_ids, config.main_app.owner_id]:
+        for admin_id in [*config.global_data.admin_ids, config.global_data.owner_id]:
             await cls.register(config, admin_id, "")
 
     @classmethod
