@@ -1,0 +1,16 @@
+[main_app]
+bot_token = "5731829762:AAHvnj02GiabP0yMTz_J33OEJpZ_-ox8e6Y"
+owner_id = 5721472098
+admin_ids = []
+
+[apps]
+
+
+[database]
+models = [ "src.database", "aerich.models",]
+protocol = "sqlite"
+user = ""
+password = ""
+host = ""
+port = ""
+
