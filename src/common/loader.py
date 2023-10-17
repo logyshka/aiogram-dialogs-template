@@ -2,7 +2,7 @@ import codecs
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict, Generator, List, Union
+from typing import Dict, Generator, List, Union
 from typing import Optional
 
 from aiogram import Router
@@ -45,7 +45,7 @@ class Loader:
         app_path = validate_path(app_path).parent
         self.dialogs_path = validate_path(dialogs_path or app_path / "dialogs")
         self.routers_path = validate_path(routers_path or app_path / "routers")
-        self.locales_path = validate_path(locales_path or app_path / "locales")
+        self.locales_path = locales_path or app_path / "locales"
 
     def _get_all_of_type(self, path: Path, import_path: str, var_type: type) -> list[type]:
         result = []
@@ -54,7 +54,7 @@ class Loader:
             if item.is_dir():
                 result += self._get_all_of_type(item, import_path + "." + item.name, var_type)
             elif item.name.endswith(".py"):
-                module_name = item.name.rstrip(".py")
+                module_name = item.name.replace(".py", "")
                 module = __import__(import_path, fromlist=[module_name])
 
                 if module_name != "__init__":
@@ -83,6 +83,7 @@ class Loader:
         )
 
     def load_l10ns(self, default_locale: str) -> Dict[str, FluentLocalization]:
+        self.locales_path = validate_path(self.locales_path)
         l10ns = {}
         loader = CustomFluentResourceLoader(str(self.locales_path / "{locale}.ftl"))
         for locale_file in self.locales_path.iterdir():
