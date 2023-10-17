@@ -3,9 +3,6 @@ bot_token = "token-here"
 owner_id = 0
 admin_ids = []
 
-[apps]
-
-
 [database]
 models = [ "src.database", "aerich.models",]
 protocol = "sqlite"
