@@ -7,6 +7,7 @@ from aiogram_dialog import setup_dialogs
 
 from .loader import Loader
 from .middlewares import *
+from ..data.config import AppConfig
 
 
 class App:
@@ -33,28 +34,26 @@ class App:
         self._dispatcher.callback_query.outer_middleware(throttling_middleware)
 
     def setup_locale(self, multi_locale: bool, default_locale: str) -> None:
-        l10ns = self._loader.load_l10ns(default_locale)
         if multi_locale:
+            l10ns = self._loader.load_l10ns(default_locale)
             i18n_middleware = I18NMultiMiddleware(
                 l10ns=l10ns,
                 default_locale=default_locale
             )
-        else:
-            i18n_middleware = I18NSingleMiddleware(
-                language=default_locale,
-                l10n=l10ns[default_locale]
-            )
-
-        self._dispatcher.message.middleware(i18n_middleware)
-        self._dispatcher.callback_query.middleware(i18n_middleware)
+            self._dispatcher.message.middleware(i18n_middleware)
+            self._dispatcher.callback_query.middleware(i18n_middleware)
 
     async def start(
             self,
-            bot_token: str,
+            config: AppConfig,
             parse_mode: str = ParseMode.HTML,
             context: Optional[Dict[str, Any]] = None,
     ):
         context = context or {}
-        bot = Bot(bot_token, parse_mode=parse_mode)
+        bot = Bot(config.bot_token, parse_mode=parse_mode)
+
+        bot_info = await bot.me()
+        config.bot_username = bot_info.username
+
         setup_dialogs(self._dispatcher)
         await self._dispatcher.start_polling(bot, **context)

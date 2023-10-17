@@ -17,6 +17,7 @@ class IOwnable(Storable):
 @dataclass
 class AppConfig(IOwnable):
     bot_token: str
+    bot_username: Optional[str] = None
 
 
 @dataclass
@@ -97,5 +98,6 @@ def parse_config(config_file: Path) -> Config:
 __all__ = (
     "Config",
     "parse_config",
-    "IOwnable"
+    "IOwnable",
+    "AppConfig",
 )

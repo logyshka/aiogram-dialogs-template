@@ -38,19 +38,3 @@ class I18NMultiMiddleware(BaseMiddleware):
         data["i18n"] = self.l10ns[language].format_value
         data["l10ns"] = self.l10ns
         return await handler(event, data)
-
-
-class I18NSingleMiddleware(BaseMiddleware):
-    def __init__(self, language: str, l10n: FluentLocalization):
-        self.language = language
-        self.l10n = l10n
-
-    async def __call__(
-            self,
-            handler: Handler,
-            event: Event,
-            data: Data,
-    ) -> Any:
-        data["current_language"] = self.language
-        data["i18n"] = self.l10n.format_value
-        return await handler(event, data)
