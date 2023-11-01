@@ -1,5 +1,9 @@
-[main_app]
+[app_root]
 bot_token = "token-here"
+owner_id = 0
+admin_ids = []
+
+[global_data]
 owner_id = 0
 admin_ids = []
 
